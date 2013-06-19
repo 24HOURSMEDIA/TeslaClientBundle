@@ -1,0 +1,22 @@
+{
+	"name" : "tesla/client-bundle",
+	"description" : "client bundle",
+	"type" : "symfony-bundle",
+	"authors" : [{
+			"name" : "E.Bachman",
+			"email" : "e.bachman@24hoursmedia.com"
+		}
+	],
+	"keywords" : [],
+	"homepage" : "http://www.24hoursmedia.com/tesla",
+	"license" : [
+		"CDDL-1.0"
+	],
+	"autoload" : {
+		"psr-0" : {
+			"Tesla\\ClientBundle" : ""
+		}
+	},
+	"target-dir" : "24HOURSMEDIA/TeslaClientBundle",
+	"minimum-stability" : "dev"
+}

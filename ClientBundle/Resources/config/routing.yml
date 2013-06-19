@@ -1,0 +1,3 @@
+annot:
+    resource: "@TeslaClientBundle/Controller"
+    type:     annotation
