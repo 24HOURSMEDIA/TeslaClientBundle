@@ -1,5 +1,9 @@
 <?php
+<<<<<<< HEAD
 
+=======
+// master dev
+>>>>>>> master-dev
 namespace Tesla\Bundle\ClientBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
