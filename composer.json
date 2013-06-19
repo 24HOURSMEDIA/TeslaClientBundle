@@ -10,7 +10,7 @@
 	"keywords" : [],
 	"homepage" : "http://www.24hoursmedia.com/tesla",
 	"license" : [
-		"CDDL-1.0"
+		"MIT"
 	],
 	"autoload" : {
 		"psr-0" : {
@@ -18,10 +18,5 @@
 		}
 	},
 	"target-dir" : "24HOURSMEDIA/TeslaClientBundle",
-	"minimum-stability" : "dev",
-	"extra": {
-        	"branch-alias": {
-            		"dev-master": "1.0.x"
-        	}
-    	}
+	"minimum-stability" : "stable"
 }
