@@ -14,7 +14,7 @@
 	],
 	"autoload" : {
 		"psr-0" : {
-			"Tesla\\ClientBundle" : ""
+			"Tesla\\Bundle\\ClientBundle" : ""
 		}
 	},
 	"target-dir" : "24HOURSMEDIA/TeslaClientBundle",
