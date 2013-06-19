@@ -17,6 +17,6 @@
 			"Tesla\\Bundle\\ClientBundle" : ""
 		}
 	},
-	"target-dir" : "24HOURSMEDIA/TeslaClientBundle",
+	"target-dir" : "Tesla/Bundle/ClientBundle",
 	"minimum-stability" : "stable"
 }
