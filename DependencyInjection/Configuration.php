@@ -26,7 +26,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
         ->children()
-        ->scalarNode('throw_exceptions')->defaultValue(false)->end()
+        ->booleanNode('throw_exceptions')->defaultValue(false)->end()
         ->scalarNode('cache_namespace')->defaultValue(uniqid('tesla_client'))->end()
         ->end();
 
