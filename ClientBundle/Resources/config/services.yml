@@ -1,0 +1,37 @@
+parameters:
+
+    tesla_client.httpclient_factory.class: Tesla\Bundle\ClientBundle\Client\HttpClientFactory
+    tesla_client.httpproxy_factory.class: Tesla\Bundle\ClientBundle\Proxy\HttpProxyFactory
+    
+services:
+#    tesla_client.example:
+#        class: %tesla_client.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    tesla_client.memcache_driver:
+         class: Memcache
+         public: false
+         calls:
+             - [addServer, [localhost, 11211]]
+         
+    tesla_client.generic_cache:
+         class: %doctrine.orm.cache.memcache.class%
+         public: false
+         calls:
+             - [setNamespace, [%tesla_client.configuration.cache_namespace%]]
+             - [setMemcache, [@tesla_client.memcache_driver]]
+        
+
+    tesla_client.httpclient_factory:
+        class: %tesla_client.httpclient_factory.class%
+        public: true
+        arguments:
+            - %tesla_client.configuration%
+            - @tesla_client.generic_cache
+            
+    tesla_client.httpproxy_factory:
+        class: %tesla_client.httpproxy_factory.class%
+        public: true
+        arguments:
+            - %tesla_client.configuration%
+            - @tesla_client.generic_cache
