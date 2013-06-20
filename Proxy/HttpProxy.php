@@ -8,6 +8,13 @@ class HttpProxy extends HttpClient implements HttpProxyInterface
 
 	private $translationUrls = array();
 
+	/**
+	 * If this behaviour is true, the resulting url is always url encoded and passed through the base url
+	 * (which MUST be set). It is automatically append to the end of the proxy base url.
+	 * @var boolean
+	 */
+	private $passEncodedUrlBehavior = false;
+
 	public function createRequest ($uri = null, array $parms = array(), $method = 'GET')
 	{
 
@@ -26,6 +33,14 @@ class HttpProxy extends HttpClient implements HttpProxyInterface
 				$uri = substr($uri, strlen($url));
 			}
 		}
+
+		if ($this->passEncodedUrlBehavior) {
+			if (!$this->getBaseUrl()) {
+				throw new \RuntimeException('For passEncodedUrlBehavior proxy base url MUST be set');
+			}
+			$uri = $this->getBaseUrl() . urlencode($uri);
+		}
+
 		return parent::createRequest($uri, $parms, $method);
 	}
 
@@ -51,4 +66,21 @@ class HttpProxy extends HttpClient implements HttpProxyInterface
 	public function addTranslationUrl($url) {
 		$this->translationUrls[] = $url;
 	}
+	/**
+	 * @return the $passEncodedUrlBehavior
+	 */
+	public function getPassEncodedUrlBehavior ()
+	{
+		return $this->passEncodedUrlBehavior;
+	}
+
+	/**
+	 * @param boolean $passEncodedUrlBehavior
+	 */
+	public function setPassEncodedUrlBehavior ($passEncodedUrlBehavior)
+	{
+		$this->passEncodedUrlBehavior = $passEncodedUrlBehavior;
+		return $this;
+	}
+
 }

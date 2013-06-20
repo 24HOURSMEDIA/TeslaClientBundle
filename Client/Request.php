@@ -5,8 +5,25 @@ use Symfony\Component\HttpFoundation\Request as Sf2Request;
 class Request extends Sf2Request {
 
 
+	/**
+	 *
+	 * @var HttpClientInterface
+	 */
+	private $mediator;
+
 	public function setContent($content) {
 		$this->content = $content;
+	}
+
+	public function setMediator(HttpClientInterface $mediator) {
+		$this->mediator = $mediator;
+	}
+
+	/**
+	 * Executes the request through the mediator
+	 */
+	public function execute() {
+		return $this->mediator->execute($this);
 	}
 
 	public function setRequestFormat($format, $priority = 0) {

@@ -24,4 +24,7 @@ interface HttpClientInterface {
 	 */
 	public function cacheExecute(Request $request, $ttl);
 
+
+
+
 }

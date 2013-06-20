@@ -65,6 +65,7 @@ class HttpClient implements HttpClientInterface
 			$uri .= '?' . $p['query'];
 		}
 		$r = Request::create($uri, $method);
+		$r->setMediator($this);
 		$r->headers->set('Accept', array(
 				'*/*;q=0.1'
 		));
@@ -142,4 +143,12 @@ class HttpClient implements HttpClientInterface
 		$this->cache->save($key, $response, $ttl);
 		return $response;
 	}
+	/**
+	 * @return the $baseUrl
+	 */
+	public function getBaseUrl ()
+	{
+		return $this->baseUrl;
+	}
+
 }

@@ -18,4 +18,5 @@ interface HttpProxyInterface extends HttpClientInterface {
 	public function addTranslationUrl($url);
 
 
+
 }

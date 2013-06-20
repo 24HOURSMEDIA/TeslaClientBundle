@@ -13,7 +13,7 @@ class HttpClientTest extends WebTestCase {
 
 	/**
 	 *
-	 * @return \Tesla\Bundle\ClientBundle\Client\HttpClient
+	 * @return \Tesla\Bundle\ClientBundle\Client\HttpClientInterface
 	 * Interface
 	 */
 	public function getHttpClient($baseUrl = null) {
@@ -125,7 +125,12 @@ class HttpClientTest extends WebTestCase {
 		$r = $http->createRequest('/foo.php');
 		$foo = $http->execute($r)->getContent();
 		$this->assertEquals('foo', $foo);
+	}
 
-
+	public function testRequestThroughMediator() {
+		$http = $this->getHttpClient();
+		$r = $http->createRequest('http://www.example.com');
+		$content = $r->execute()->getContent();
+		$this->assertContains('example', $content);
 	}
 }
