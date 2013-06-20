@@ -49,7 +49,6 @@ class TeslaResponse extends Response {
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if (!$code) {
 			$code = 404;
-
 		}
 		$response->setStatusCode($code);
 		$headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
@@ -59,7 +58,6 @@ class TeslaResponse extends Response {
 		}
 		// parse the headers
 		$rawHeaders = explode("\r\n", $header);
-
 		foreach ($rawHeaders as $header) {
 			$parts = explode(':', $header, 2);
 			if (count($parts) == 2) {
@@ -72,7 +70,6 @@ class TeslaResponse extends Response {
 				$response->headers->set($parts[0], $vals);
 			}
 		}
-
 		return $response;
 	}
 
