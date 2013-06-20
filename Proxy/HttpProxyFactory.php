@@ -1,7 +1,7 @@
 <?php
 namespace Tesla\Bundle\ClientBundle\Proxy;
 use Tesla\Bundle\ClientBundle\Client\HttpClientFactory;
-use Tesla\Bundle\ClientBundle\Proxy\ProxyClient;
+use Tesla\Bundle\ClientBundle\Proxy\HttpProxy;
 use Doctrine\Common\Cache\Cache;
 
 /**
@@ -13,11 +13,11 @@ use Doctrine\Common\Cache\Cache;
 class HttpProxyFactory extends HttpClientFactory
 {
 
-	protected $class = 'Tesla\Bundle\ClientBundle\Proxy\ProxyClient';
+	protected $class = 'Tesla\Bundle\ClientBundle\Proxy\HttpProxy';
 
 	/**
 	 *
-	 * @return ProxyClient
+	 * @return HttpProxyInterface
 	 */
 	public function get ($baseUrl = null)
 	{

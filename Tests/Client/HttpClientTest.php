@@ -5,9 +5,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 use Tesla\Bundle\ClientBundle\Client\HttpClientFactory;
 use Tesla\Bundle\ClientBundle\Client\HttpClientInterface;
-use Tesla\Bundle\ClientBundle\Client\TeslaRequest;
-use Tesla\Bundle\ClientBundle\Client\TeslaResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Tesla\Bundle\ClientBundle\Client\Request;
+
+
 
 class HttpClientTest extends WebTestCase {
 
@@ -18,7 +18,7 @@ class HttpClientTest extends WebTestCase {
 	 */
 	public function getHttpClient($baseUrl = null) {
 		$client = static::createClient();
-		$factory = $client->getContainer()->get('tesla_client.httpclient_factory');
+		$factory = $client->getContainer()->get('tesla_client.http_client_factory');
 		$this->assertTrue($factory instanceof HttpClientFactory);
 
 		// get a configured http client
@@ -31,7 +31,6 @@ class HttpClientTest extends WebTestCase {
 	{
 		$http = $this->getHttpClient();
 		$request = $http->createRequest();
-		$this->assertTrue($request instanceof TeslaRequest);
 		$this->assertTrue($request instanceof Request);
 	}
 

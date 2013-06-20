@@ -11,7 +11,7 @@ class HttpClientFactoryTest extends WebTestCase {
 	public function testGet()
 	{
 		$client = static::createClient();
-		$factory = $client->getContainer()->get('tesla_client.httpclient_factory');
+		$factory = $client->getContainer()->get('tesla_client.http_client_factory');
 		$this->assertTrue($factory instanceof HttpClientFactory);
 
 		// get a configured http client

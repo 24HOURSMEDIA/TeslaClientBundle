@@ -1,12 +1,12 @@
 parameters:
 
-    tesla_client.httpclient_factory.class: Tesla\Bundle\ClientBundle\Client\HttpClientFactory
-    tesla_client.httpproxy_factory.class: Tesla\Bundle\ClientBundle\Proxy\HttpProxyFactory
+    tesla_client.http_client_factory.class: Tesla\Bundle\ClientBundle\Client\HttpClientFactory
+    tesla_client.http_proxy_factory.class: Tesla\Bundle\ClientBundle\Proxy\HttpProxyFactory
+    tesla_client.http_client.class: Tesla\Bundle\ClientBundle\Client\HttpClient
+    tesla_client.http_proxy.class: Tesla\Bundle\ClientBundle\Proxy\HttpProxy
     
 services:
-#    tesla_client.example:
-#        class: %tesla_client.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+
 
     tesla_client.memcache_driver:
          class: Memcache
@@ -22,16 +22,31 @@ services:
              - [setMemcache, [@tesla_client.memcache_driver]]
         
 
-    tesla_client.httpclient_factory:
-        class: %tesla_client.httpclient_factory.class%
+    tesla_client.http_client_factory:
+        class: %tesla_client.http_client_factory.class%
         public: true
         arguments:
             - %tesla_client.configuration%
             - @tesla_client.generic_cache
             
     tesla_client.httpproxy_factory:
-        class: %tesla_client.httpproxy_factory.class%
+        class: %tesla_client.http_proxy_factory.class%
         public: true
         arguments:
             - %tesla_client.configuration%
             - @tesla_client.generic_cache
+            
+    tesla_client.http_client:
+        class: %tesla_client.http_client.class%
+        factory_service: tesla_client.http_client_factory
+        factory_method: get
+        
+    tesla_client.http_proxy_example:
+        class: %tesla_client.http_proxy.class%
+        factory_service: tesla_client.httpproxy_factory
+        factory_method: get
+        arguments:
+            - http://www.example.com
+        calls:
+            - [addTranslationUrl, ["http://foo"]]
+            - [addTranslationUrl, ["http://bar/sub"]]  

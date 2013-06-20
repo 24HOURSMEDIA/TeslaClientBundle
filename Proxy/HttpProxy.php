@@ -1,8 +1,9 @@
 <?php
 namespace Tesla\Bundle\ClientBundle\Proxy;
 use Tesla\Bundle\ClientBundle\Client\HttpClient;
+use Tesla\Bundle\ClientBundle\Client\HttpClientInterface;
 
-class ProxyClient extends HttpClient
+class HttpProxy extends HttpClient implements HttpProxyInterface
 {
 
 	private $translationUrls = array();
@@ -18,7 +19,7 @@ class ProxyClient extends HttpClient
 		foreach ($this->translationUrls as $url) {
 			$parts = parse_url($url);
 			$url = $parts['scheme'] . '://' . $parts['host'];
-			if ($parts['path']) {
+			if (isset($parts['path'])) {
 				$url .= $parts['path'];
 			}
 			if (substr($uri, 0, strlen($url)) == $url) {
@@ -45,5 +46,9 @@ class ProxyClient extends HttpClient
 	{
 		$this->translationUrls = $translationUrls;
 		return $this;
+	}
+
+	public function addTranslationUrl($url) {
+		$this->translationUrls[] = $url;
 	}
 }

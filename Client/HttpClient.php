@@ -1,6 +1,5 @@
 <?php
 namespace Tesla\Bundle\ClientBundle\Client;
-use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Cache\Cache;
 
 /**
@@ -65,7 +64,7 @@ class HttpClient implements HttpClientInterface
 		if (isset($p['query'])) {
 			$uri .= '?' . $p['query'];
 		}
-		$r = TeslaRequest::create($uri, $method);
+		$r = Request::create($uri, $method);
 		$r->headers->set('Accept', array(
 				'*/*;q=0.1'
 		));
@@ -76,11 +75,11 @@ class HttpClient implements HttpClientInterface
 	 * (non-PHPdoc)
 	 *
 	 * @see \Tesla\Bundle\ClientBundle\Client\HttpClientInterface::execute()
-	 * @return TeslaResponse
+	 * @return Response
 	 */
 	public function execute (Request $request)
 	{
-		$response = new TeslaResponse();
+		$response = new Response();
 		$ch = curl_init($request->getUri());
 		curl_setopt_array($ch,
 				array(
@@ -90,7 +89,7 @@ class HttpClient implements HttpClientInterface
 						CURLOPT_HEADER => true,
 						CURLOPT_VERBOSE => false
 				));
-		if (($request instanceof TeslaRequest) && (string) $request->getContent()) {
+		if (($request instanceof Request) && (string) $request->getContent()) {
 			curl_setopt($ch, CURLOPT_POSTFIELDS, (string) $request->getContent());
 		} elseif ($request->request->count() > 0) {
 			$query = http_build_query($request->request->all());
@@ -114,7 +113,7 @@ class HttpClient implements HttpClientInterface
 		}
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $created);
 		$data = curl_exec($ch);
-		$response = TeslaResponse::createFromExecutedCurl($ch, $data);
+		$response = Response::createFromExecutedCurl($ch, $data);
 		curl_close($ch);
 		return $response;
 	}

@@ -1,6 +1,6 @@
 <?php
 namespace Tesla\Bundle\ClientBundle\Client;
-use Symfony\Component\HttpFoundation\Request;
+
 
 interface HttpClientInterface {
 
@@ -12,7 +12,8 @@ interface HttpClientInterface {
 
 	/**
 	 * Executes a request
-	 * @param Response $request
+	 * @param Request $request
+	 * @return TeslaResponse
 	 */
 	public function execute(Request $request);
 
