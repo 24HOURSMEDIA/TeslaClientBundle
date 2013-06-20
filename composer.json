@@ -2,6 +2,7 @@
 	"name" : "24hoursmedia/teslaclientbundle",
 	"description" : "client bundle",
 	"type" : "symfony-bundle",
+	"version": "1.0.0",
 	"authors" : [{
 			"name" : "E.Bachman",
 			"email" : "e.bachman@24hoursmedia.com"
