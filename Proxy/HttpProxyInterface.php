@@ -20,19 +20,12 @@ interface HttpProxyInterface extends HttpClientInterface {
 	/**
 	 * @return boolean $enabled
 	 */
-	public function getEnabled ()
-	{
-		return $this->enabled;
-	}
+	public function getEnabled ();
 
 	/**
 	 * @param boolean $enabled
 	 * @return HttpProxyInterface
 	 */
-	public function setEnabled ($enabled)
-	{
-		$this->enabled = $enabled;
-		return $this;
-	}
+	public function setEnabled ($enabled);
 
 }
