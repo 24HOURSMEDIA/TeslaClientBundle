@@ -15,9 +15,15 @@ class HttpProxy extends HttpClient implements HttpProxyInterface
 	 */
 	private $passEncodedUrlBehavior = false;
 
+	private $enabled = true;
+
 	public function createRequest ($uri = null, array $parms = array(), $method = 'GET')
 	{
 
+		if (!$this->enabled) {
+			// do nothing if the proxy is disabled, direct pass.
+			return parent::createRequest($uri, $parms, $method);
+		}
 		// translate the uri...
 		$parts = parse_url($uri);
 		$uri = (isset($parts['scheme']) ? $parts['scheme'] . '://' . $parts['host'] : '') . (isset($parts['path']) ? $parts['path'] : '/') .
@@ -82,5 +88,22 @@ class HttpProxy extends HttpClient implements HttpProxyInterface
 		$this->passEncodedUrlBehavior = $passEncodedUrlBehavior;
 		return $this;
 	}
+	/**
+	 * @return the $enabled
+	 */
+	public function getEnabled ()
+	{
+		return $this->enabled;
+	}
+
+	/**
+	 * @param boolean $enabled
+	 */
+	public function setEnabled ($enabled)
+	{
+		$this->enabled = $enabled;
+		return $this;
+	}
+
 
 }
