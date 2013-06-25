@@ -19,6 +19,17 @@ class HttpClient implements HttpClientInterface
 	 */
 	private $cache;
 
+	private $basicAuth = false;
+	private $basicAuthUser = '';
+	private $basicAuthPassword = '';
+
+	public function basicAuthentication($user = null, $password = null) {
+		$this->basicAuth = $user && $password;
+		$this->basicAuthUser = $user;
+		$this->basicAuthPassword = $password;
+		return $this;
+	}
+
 	public function setCache (Cache $cache)
 	{
 		$this->cache = $cache;
@@ -90,6 +101,9 @@ class HttpClient implements HttpClientInterface
 						CURLOPT_HEADER => true,
 						CURLOPT_VERBOSE => false
 				));
+		if ($this->basicAuth) {
+			curl_setopt($ch, CURLOPT_USERPWD, $this->basicAuthUser . ":" . $this->basicAuthPassword);
+		}
 		if (($request instanceof Request) && (string) $request->getContent()) {
 			curl_setopt($ch, CURLOPT_POSTFIELDS, (string) $request->getContent());
 		} elseif ($request->request->count() > 0) {
@@ -127,7 +141,7 @@ class HttpClient implements HttpClientInterface
 
 		if (! in_array($request->getMethod(), array(
 				'GET',
-				'POST'
+				'HEAD'
 		))) {
 			return $this->execute($request);
 		}
@@ -143,12 +157,13 @@ class HttpClient implements HttpClientInterface
 		$this->cache->save($key, $response, $ttl);
 		return $response;
 	}
+
 	/**
+	 *
 	 * @return the $baseUrl
 	 */
 	public function getBaseUrl ()
 	{
 		return $this->baseUrl;
 	}
-
 }

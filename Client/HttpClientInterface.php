@@ -13,7 +13,7 @@ interface HttpClientInterface {
 	/**
 	 * Executes a request
 	 * @param Request $request
-	 * @return TeslaResponse
+	 * @return Response
 	 */
 	public function execute(Request $request);
 
@@ -21,9 +21,17 @@ interface HttpClientInterface {
 	 * Forces cached execution of request
 	 * @param Request $request
 	 * @param int $ttl
+	 * @return HttpClientInterface
 	 */
 	public function cacheExecute(Request $request, $ttl);
 
+	/**
+	 * Enables basic authentication
+	 * @param string $user
+	 * @param string $password
+	 * @return HttpClientInterface
+	 */
+	public function basicAuthentication($user = null, $password = null);
 
 
 
