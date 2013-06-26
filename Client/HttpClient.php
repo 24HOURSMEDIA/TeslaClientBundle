@@ -23,6 +23,13 @@ class HttpClient implements HttpClientInterface
 	private $basicAuthUser = '';
 	private $basicAuthPassword = '';
 
+	/**
+	 * Array with request headers to set in key value pairs, i.e.
+	 * [ ['user-agent', 'browser'], [.., ..]  ]
+	 * @var unknown
+	 */
+	protected $requestHeaders = array();
+
 	public function basicAuthentication($user = null, $password = null) {
 		$this->basicAuth = $user && $password;
 		$this->basicAuthUser = $user;
@@ -80,6 +87,12 @@ class HttpClient implements HttpClientInterface
 		$r->headers->set('Accept', array(
 				'*/*;q=0.1'
 		));
+
+		$singularHeaders = array('user-agent');
+		foreach ($this->requestHeaders as $h) {
+				$r->headers->set($h[0], $h[1], in_array($h[0], $singularHeaders));
+		}
+
 		return $r;
 	}
 
@@ -165,5 +178,16 @@ class HttpClient implements HttpClientInterface
 	public function getBaseUrl ()
 	{
 		return $this->baseUrl;
+	}
+
+	public function setRequestHeaders(array $headers) {
+		$this->requestHeaders = $headers;
+		return $this;
+	}
+
+	public function addRequestHeader($key, $val) {
+
+		$this->requestHeaders[] = array($key, $val);
+		return $this;
 	}
 }

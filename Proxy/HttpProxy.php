@@ -43,8 +43,13 @@ class HttpProxy extends HttpClient implements HttpProxyInterface
 			$values = isset($allHeaders[$key]) ? $allHeaders[$key] : array();
 			$values = is_array($values) ? $values: array($values);
 			foreach ($values as $v) {
+					if (in_array($key, $singularHeaders)) {
+						$r->headers->set($key, $v, true);
+					} else {
 
-					$r->headers->set($key, $v, in_array($key, $singularHeaders));
+						$r->headers->set($key, $v, false);
+					}
+
 
 			}
 

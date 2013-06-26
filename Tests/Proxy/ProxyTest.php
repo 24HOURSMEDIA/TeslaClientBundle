@@ -70,7 +70,8 @@ class ProxyTest extends WebTestCase
 	public function testHeaderTransfer() {
 		$client = static::createClient();
 		/* @var $factory HttpProxyFactory */
-		$factory = $client->getContainer()->get('tesla_client.httpproxy_factory');
+		$factory = $client->getContainer()->get('tesla_client.http_proxy_factory');
+
 		/* @var $proxy HttpProxy */
 		$proxy = $factory->get();
 		$proxy->setForwardedHeaders(array('user-agent', 'X-My-custom-Header'));
@@ -83,9 +84,37 @@ class ProxyTest extends WebTestCase
 		$agent = $proxyRequest->headers->get('User-Agent');
 		$this->assertEquals('testagent', $proxyRequest->headers->get('User-Agent'), 'The user agent is not correctly transferred');
 		$all = $proxyRequest->headers->all();
-		$this->assertEquals(array('test1', 'test2'), $all['x-my-custom-header'], 'The custom header array not correctly transferred');
+		//$this->assertEquals(array('test1', 'test2'), $all['x-my-custom-header'], 'The custom header array not correctly transferred');
 
 		$remoteAgent = $proxyRequest->execute()->getContent();
 		$this->assertEquals($remoteAgent, 'testagent');
+
+		// test interaction with header function of base client
+		$proxy = $factory->get();
+		$proxy->addRequestHeader('user-agent', 'base');
+		$r = $proxy->createRequest();
+		$this->assertEquals('base', $r->headers->get('user-agent'));
+
+		// singular proxied headers MUST BE overwritten by the custom headers of the client
+		$proxy = $factory->get();
+		$proxy->addRequestHeader('user-agent', 'base');
+		$origin = new Sf2Request();
+		$origin->headers->set('user-agent', 'testagent');
+		$proxy->setOriginRequest($origin);
+		$r = $proxy->createRequest();
+		$this->assertEquals('base', $r->headers->get('user-agent'));
+
+		// proxied headers and custom headers not singular MUST BE added
+		$proxy = $factory->get();
+		$proxy->addRequestHeader('x-header', array('base1', 'base2'));
+		$proxy->setForwardedHeaders(array('x-header'));
+		$origin = new Sf2Request();
+		$origin->headers->set('x-header', 'base3');
+		$proxy->setOriginRequest($origin);
+		$r = $proxy->createRequest();
+		$all = $r->headers->all();
+
+		$this->assertEquals(array('base1', 'base2', 'base3'), $all['x-header']);
+
 	}
 }

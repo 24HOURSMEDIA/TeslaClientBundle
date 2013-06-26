@@ -33,6 +33,18 @@ interface HttpClientInterface {
 	 */
 	public function basicAuthentication($user = null, $password = null);
 
+	/**
+	 * Set headers (nested array, i.e. [['user-agent', 'headervalue']]
+	 * @param array $headers
+	 * @return HttpClientInterface
+	 */
+	function setRequestHeaders(array $headers);
 
+	/**
+	 * Adds a header to the request
+	 * @param string $key
+	 * @param string $val
+	 */
+	public function addRequestHeader($key, $val);
 
 }
