@@ -26,6 +26,13 @@ class Request extends Sf2Request {
 		return $this->mediator->execute($this);
 	}
 
+	/**
+	 * Executes the request through the mediator
+	 */
+	public function cacheExecute($ttl) {
+		return $this->mediator->cacheExecute($this, $ttl);
+	}
+
 	public function setRequestFormat($format, $priority = 0) {
 		parent::setRequestFormat($format);
 		$mimeType = $this->getMimeType($format);
