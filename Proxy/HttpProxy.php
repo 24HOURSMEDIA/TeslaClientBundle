@@ -2,7 +2,7 @@
 namespace Tesla\Bundle\ClientBundle\Proxy;
 use Tesla\Bundle\ClientBundle\Client\HttpClient;
 use Tesla\Bundle\ClientBundle\Client\HttpClientInterface;
-
+use Symfony\Component\HttpFoundation\Request as Sf2Request;
 class HttpProxy extends HttpClient implements HttpProxyInterface
 {
 
@@ -17,13 +17,50 @@ class HttpProxy extends HttpClient implements HttpProxyInterface
 
 	private $enabled = true;
 
+	private $proxiedHeaders = array();
+
+	/**
+	 * The original symfony2 request
+	 * @var Sf2Request
+	 */
+	private $originRequest;
+
+
+	/**
+	 * Override
+	 * (non-PHPdoc)
+	 * @see \Tesla\Bundle\ClientBundle\Client\HttpClient::createRequest()
+	 */
+	private function _createRequest($uri, $params, $method) {
+		$r = parent::createRequest($uri, $params, $method);
+		// transfer proxied headers
+		// this way because sometimes sf does not return multiple headers with same key as array
+		$allHeaders = $this->originRequest->headers->all();
+
+		$singularHeaders = array('user-agent');
+		foreach ($this->proxiedHeaders as $key) {
+			$key = strtolower($key);
+			$values = isset($allHeaders[$key]) ? $allHeaders[$key] : array();
+			$values = is_array($values) ? $values: array($values);
+			foreach ($values as $v) {
+
+					$r->headers->set($key, $v, in_array($key, $singularHeaders));
+
+			}
+
+		}
+		return $r;
+	}
+
 	public function createRequest ($uri = null, array $parms = array(), $method = 'GET')
 	{
 
 		if (!$this->enabled) {
 			// do nothing if the proxy is disabled, direct pass.
-			return parent::createRequest($uri, $parms, $method);
+			return $this->_createRequest($uri, $parms, $method);
 		}
+
+
 		// translate the uri...
 		$parts = parse_url($uri);
 		$uri = (isset($parts['scheme']) ? $parts['scheme'] . '://' . $parts['host'] : '') . (isset($parts['path']) ? $parts['path'] : '/') .
@@ -47,7 +84,7 @@ class HttpProxy extends HttpClient implements HttpProxyInterface
 			$uri = $this->getBaseUrl() . urlencode($uri);
 		}
 
-		return parent::createRequest($uri, $parms, $method);
+		return $this->_createRequest($uri, $parms, $method);
 	}
 
 	/**
@@ -105,5 +142,23 @@ class HttpProxy extends HttpClient implements HttpProxyInterface
 		return $this;
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \Tesla\Bundle\ClientBundle\Proxy\HttpProxyInterface::setProxiedHeaders()
+	 */
+	public function setProxiedHeaders(array $headers) {
+		$this->proxiedHeaders = $headers;
+		return $this;
+	}
+
+	/**
+	 * Sets the origin request
+	 * @param Sf2Request $request
+	 * @return \Tesla\Bundle\ClientBundle\Proxy\HttpProxy
+	 */
+	public function setOriginRequest(Sf2Request $request) {
+		$this->originRequest = $request;
+		return $this;
+	}
 
 }

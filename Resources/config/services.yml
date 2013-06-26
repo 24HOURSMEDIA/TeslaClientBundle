@@ -35,6 +35,9 @@ services:
         arguments:
             - %tesla_client.configuration%
             - @tesla_client.generic_cache
+        strict: false
+        calls:
+            - [setContainer, [@service_container]]
             
     tesla_client.http_client:
         class: %tesla_client.http_client.class%
