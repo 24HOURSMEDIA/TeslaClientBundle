@@ -11,7 +11,7 @@ class ProxyTest extends WebTestCase
 	{
 		$client = static::createClient();
 		/* @var $factory HttpProxyFactory */
-		$factory = $client->getContainer()->get('tesla_client.httpproxy_factory');
+		$factory = $client->getContainer()->get('tesla_client.http_proxy_factory');
 
 		// test if the base urls below get properly translated
 		$urlset = array(

@@ -34,7 +34,7 @@ class HttpProxyServiceTest extends WebTestCase {
 	public function testEmptyBaseUrlBehaviour() {
 		$client = static::createClient();
 		/* @var $factory HttpProxyFactory */
-		$factory = $client->getContainer()->get('tesla_client.httpproxy_factory');
+		$factory = $client->getContainer()->get('tesla_client.http_proxy_factory');
 		$proxy = $factory->get('http://proxy-foo/');
 		$request = $proxy->createRequest('http://www.example.com/');
 		$this->assertEquals('http://www.example.com/', $request->getUri());
@@ -43,7 +43,7 @@ class HttpProxyServiceTest extends WebTestCase {
 	public function testPassEncodedUrlBehavior() {
 		$client = static::createClient();
 		/* @var $factory HttpProxyFactory */
-		$factory = $client->getContainer()->get('tesla_client.httpproxy_factory');
+		$factory = $client->getContainer()->get('tesla_client.http_proxy_factory');
 		$proxy = $factory->get('http://proxy-foo/proxy?url=');
 		$proxy->setPassEncodedUrlBehavior(true);
 		$request = $proxy->createRequest('http://www.example.com/');

@@ -29,7 +29,7 @@ services:
             - %tesla_client.configuration%
             - @tesla_client.generic_cache
             
-    tesla_client.httpproxy_factory:
+    tesla_client.http_proxy_factory:
         class: %tesla_client.http_proxy_factory.class%
         public: true
         arguments:
