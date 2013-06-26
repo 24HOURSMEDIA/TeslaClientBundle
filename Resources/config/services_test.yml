@@ -11,3 +11,4 @@ services:
         calls:
             - [addTranslationUrl, ["http://foo"]]
             - [addTranslationUrl, ["http://bar/sub"]]
+            

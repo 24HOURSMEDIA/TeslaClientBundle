@@ -17,10 +17,10 @@ class HttpProxyFactory extends HttpClientFactory
 	protected $class = 'Tesla\Bundle\ClientBundle\Proxy\HttpProxy';
 
 	/**
-	 * Required to set the request object
-	 * @var ContainerInterface
+	 *
+	 * @var Sf2Request
 	 */
-	private $container;
+	private $originRequest;
 
 	/**
 	 *
@@ -30,13 +30,7 @@ class HttpProxyFactory extends HttpClientFactory
 	{
 		/* @var $client HttpProxy */
 		$client = parent::get($baseUrl);
-		// st the originating request
-		if ($this->container->isScopeActive('request')) {
-			$origin = $this->container->get('request');
-		} else {
-			$origin = new Sf2Request();
-		}
-		$client->setOriginRequest($origin);
+		$client->setOriginRequest($this->originRequest ? $this->originRequest : new Sf2Request());
 		return $client;
 	}
 
@@ -44,8 +38,8 @@ class HttpProxyFactory extends HttpClientFactory
 	 * Sets the origin request
 	 * @return \Tesla\Bundle\ClientBundle\Proxy\HttpProxy
 	 */
-	public function setContainer($container) {
-		$this->container = $container;
+	public function setOriginRequest($request) {
+		$this->originRequest = $request;
 		return $this;
 	}
 
