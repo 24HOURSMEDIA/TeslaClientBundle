@@ -1,0 +1,13 @@
+# services only available in test execution environment
+
+services:
+
+    tesla_client.http_proxy_example:
+        class: %tesla_client.http_proxy.class%
+        factory_service: tesla_client.httpproxy_factory
+        factory_method: get
+        arguments:
+            - http://www.example.com
+        calls:
+            - [addTranslationUrl, ["http://foo"]]
+            - [addTranslationUrl, ["http://bar/sub"]]
