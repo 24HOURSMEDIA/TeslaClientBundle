@@ -29,6 +29,6 @@ interface HttpProxyInterface extends HttpClientInterface {
 	public function setEnabled ($enabled);
 
 	/* Sets headers to be proxied from the incoming Request */
-	public function setProxiedHeaders(array $headers);
+	public function setForwardedHeaders(array $headers);
 
 }

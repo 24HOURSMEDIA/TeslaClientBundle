@@ -73,7 +73,7 @@ class ProxyTest extends WebTestCase
 		$factory = $client->getContainer()->get('tesla_client.httpproxy_factory');
 		/* @var $proxy HttpProxy */
 		$proxy = $factory->get();
-		$proxy->setProxiedHeaders(array('user-agent', 'X-My-custom-Header'));
+		$proxy->setForwardedHeaders(array('user-agent', 'X-My-custom-Header'));
 		// create a stub request
 		$origin = new Sf2Request();
 		$origin->headers->set('user-agent', 'testagent');

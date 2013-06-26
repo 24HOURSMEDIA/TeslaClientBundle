@@ -17,7 +17,7 @@ class HttpProxy extends HttpClient implements HttpProxyInterface
 
 	private $enabled = true;
 
-	private $proxiedHeaders = array();
+	private $forwardedHeaders = array();
 
 	/**
 	 * The original symfony2 request
@@ -38,7 +38,7 @@ class HttpProxy extends HttpClient implements HttpProxyInterface
 		$allHeaders = $this->originRequest->headers->all();
 
 		$singularHeaders = array('user-agent');
-		foreach ($this->proxiedHeaders as $key) {
+		foreach ($this->forwardedHeaders as $key) {
 			$key = strtolower($key);
 			$values = isset($allHeaders[$key]) ? $allHeaders[$key] : array();
 			$values = is_array($values) ? $values: array($values);
@@ -144,10 +144,10 @@ class HttpProxy extends HttpClient implements HttpProxyInterface
 
 	/**
 	 * (non-PHPdoc)
-	 * @see \Tesla\Bundle\ClientBundle\Proxy\HttpProxyInterface::setProxiedHeaders()
+	 * @see \Tesla\Bundle\ClientBundle\Proxy\HttpProxyInterface::setforwardedHeaders()
 	 */
-	public function setProxiedHeaders(array $headers) {
-		$this->proxiedHeaders = $headers;
+	public function setForwardedHeaders(array $headers) {
+		$this->forwardedHeaders = $headers;
 		return $this;
 	}
 
