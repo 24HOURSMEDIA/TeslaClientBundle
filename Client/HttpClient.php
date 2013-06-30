@@ -158,7 +158,7 @@ class HttpClient implements HttpClientInterface
 		))) {
 			return $this->execute($request);
 		}
-		$key = $request->getUri();
+		$key = $request->getCacheKey();
 		$response = $this->cache->fetch($key);
 		if (! $response) {
 			$response = $this->execute($request);

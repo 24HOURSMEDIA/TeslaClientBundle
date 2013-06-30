@@ -26,6 +26,10 @@ class Response extends Sf2Response {
 		);
 	}
 
+	/**
+	 * Gets the format of the respose (i.e. html, txt, js, css, xml, rss)
+	 * @return string | null
+	 */
 	public function getFormat() {
 		$mimeType = $this->headers->get('content-type', null, true);
 		if (false !== $pos = strpos($mimeType, ';')) {
@@ -44,6 +48,12 @@ class Response extends Sf2Response {
 		return null;
 	}
 
+	/**
+	 * Factory method to create a response from a load curl handle (and the contents)
+	 * @param unknown $ch
+	 * @param string $content
+	 * @return \Tesla\Bundle\ClientBundle\Client\Response
+	 */
 	public static function createFromExecutedCurl($ch, $content) {
 		$response = new Response();
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);

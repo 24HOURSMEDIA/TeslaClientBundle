@@ -43,6 +43,10 @@ class Request extends Sf2Request {
 		return $this;
 	}
 
+	public function getCacheKey() {
+		return sha1($this->getUri() . serialize($this->headers->all()));
+	}
+
 
 
 
