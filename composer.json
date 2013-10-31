@@ -1,5 +1,5 @@
 {
-	"name" : "24hoursmedia/teslaclientbundle",
+	"name" : "24hoursmedia/tesla-client-bundle",
 	"description" : "client bundle",
 	"type" : "symfony-bundle",
 	"authors" : [{
