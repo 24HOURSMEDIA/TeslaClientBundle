@@ -1,4 +1,6 @@
 # TeslaClientBundle for Symfony 2
+----
+
 
 Symfony bundle that provides:
 - http client
