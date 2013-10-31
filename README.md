@@ -15,18 +15,11 @@ Via composer:
 
 (1) add following lines to composer.json:
 
-	(...)
-    	"repositories": [
-        	{
-           		"type": "git",
-            	"url": "git@github.com:24HOURSMEDIA/TeslaClientBundle.git"
-        	}
-    	],
-    (..)
+
     
     "require": {
     	(...)
-    	"24hoursmedia/teslaclientbundle": "master-dev"
+    	"24hoursmedia/tesla-client-bundle": "master-dev"
     	(...)
     }
     
