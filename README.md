@@ -39,7 +39,9 @@ Via composer:
 		new Tesla\Bundle\ClientBundle\TeslaClientBundle()
 	);
 
-	
+
+## history
+20131125 added possibility to directly inject additional curl options into client and proxy service
 
 ## examples
 

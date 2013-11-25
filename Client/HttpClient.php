@@ -23,6 +23,11 @@ class HttpClient implements HttpClientInterface
 	private $basicAuthUser = '';
 	private $basicAuthPassword = '';
 
+    private $curlOpts = array(
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_VERBOSE => false
+    );
+
 	/**
 	 * Array with request headers to set in key value pairs, i.e.
 	 * [ ['user-agent', 'browser'], [.., ..]  ]
@@ -36,6 +41,24 @@ class HttpClient implements HttpClientInterface
 		$this->basicAuthPassword = $password;
 		return $this;
 	}
+
+    /**
+     * Sets a CURL option
+     * @api
+     * @param $key
+     * @param $val
+     */
+    public function setCurlOpt($key, $val) {
+        if (substr($key, 0, 8) != 'CURLOPT_') {
+            throw new \RuntimeException('Invalid CURL Option key');
+        }
+        $consts = get_defined_constants();
+        if (!isset($consts[$key])) {
+            throw new \RuntimeException('Invalid CURL Option key');
+        }
+        $this->curlOpts[$consts[$key]] = $val;
+        return $this;
+    }
 
 	public function setCache (Cache $cache)
 	{
@@ -104,16 +127,23 @@ class HttpClient implements HttpClientInterface
 	 */
 	public function execute (Request $request)
 	{
+
 		$response = new Response();
 		$ch = curl_init($request->getUri());
-		curl_setopt_array($ch,
-				array(
-						CURLOPT_CUSTOMREQUEST => $request->getMethod(),
-						CURLOPT_FOLLOWLOCATION => true,
-						CURLOPT_RETURNTRANSFER => true,
-						CURLOPT_HEADER => true,
-						CURLOPT_VERBOSE => false
-				));
+
+        $opts =
+            $this->curlOpts +
+            array(
+                CURLOPT_CUSTOMREQUEST => $request->getMethod(),
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HEADER => true
+            )
+        ;
+
+
+		curl_setopt_array($ch, $opts);
+
 		if ($this->basicAuth) {
 			curl_setopt($ch, CURLOPT_USERPWD, $this->basicAuthUser . ":" . $this->basicAuthPassword);
 		}
@@ -141,6 +171,7 @@ class HttpClient implements HttpClientInterface
 		}
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $created);
 		$data = curl_exec($ch);
+
 		$response = Response::createFromExecutedCurl($ch, $data);
 		curl_close($ch);
 		return $response;
