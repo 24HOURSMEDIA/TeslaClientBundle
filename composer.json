@@ -1,22 +1,23 @@
 {
-	"name" : "24hoursmedia/teslaclientbundle",
-	"description" : "client bundle",
-	"type" : "symfony-bundle",
-	"authors" : [{
-			"name" : "E.Bachman",
-			"email" : "e.bachman@24hoursmedia.com"
-		}
-	],
-	"keywords" : [],
-	"homepage" : "http://www.24hoursmedia.com/tesla",
-	"license" : [
-		"MIT"
-	],
-	"autoload" : {
-		"psr-0" : {
-			"Tesla\\Bundle\\ClientBundle" : ""
-		}
-	},
-	"target-dir" : "Tesla/Bundle/ClientBundle",
-	"minimum-stability" : "stable"
+    "name": "24hoursmedia/tesla-client-bundle",
+    "description": "client bundle",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "E.Bachman",
+            "email": "eba@24hoursmedia.com"
+        }
+    ],
+    "keywords": [],
+    "homepage": "http://www.24hoursmedia.com/tesla",
+    "license": [
+        "MIT"
+    ],
+    "autoload": {
+        "psr-0": {
+            "Tesla\\Bundle\\ClientBundle": ""
+        }
+    },
+    "target-dir": "Tesla/Bundle/ClientBundle",
+    "minimum-stability": "stable"
 }
