@@ -137,6 +137,7 @@ class HttpClient implements HttpClientInterface
      */
     public function execute(Request $request)
     {
+
         $ch = $this->ch ? $this->ch : ($this->ch = curl_init());
         $opts =
             $this->curlOpts +
@@ -186,6 +187,7 @@ class HttpClient implements HttpClientInterface
     public function cacheExecute(Request $request, $ttl)
     {
         if (!$this->cache) {
+
             return $this->execute($request);
         }
 
@@ -200,16 +202,16 @@ class HttpClient implements HttpClientInterface
             return $this->execute($request);
         }
         $key = $request->getCacheKey();
-        $response = $this->cache->fetch($key);
-        if (!$response) {
+
+        if ($this->cache->contains($key)) {
+            $response = $this->cache->fetch($key);
+            $response->headers->set('x-tesla-cache-fresh', 0);
+        } else {
             $response = $this->execute($request);
             $response->headers->set('x-tesla-cached', date('Y-m-d H:i:s'));
             $response->headers->set('x-tesla-cache-fresh', 1);
-        } else {
-            $response->headers->set('x-tesla-cache-fresh', 0);
+            $this->cache->save($key, $response, $ttl);
         }
-        $this->cache->save($key, $response, $ttl);
-
         return $response;
     }
 
