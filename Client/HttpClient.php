@@ -180,7 +180,7 @@ class HttpClient implements HttpClientInterface
 		$data = curl_exec($ch);
 
 		$response = Response::createFromExecutedCurl($ch, $data);
-		curl_close($ch);
+		
 		return $response;
 	}
 
