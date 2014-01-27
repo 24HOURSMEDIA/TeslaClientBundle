@@ -106,6 +106,9 @@ class HttpClient implements HttpClientInterface
         if (isset($p['host'])) {
             $uri .= $p['host'];
         }
+        if (isset($p['port']) && $p['port'] != '80') {
+            $uri .= ':'.$p['port'];
+        }
         if (isset($p['path'])) {
             $uri .= $p['path'];
         }
